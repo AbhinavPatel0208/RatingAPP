@@ -14,9 +14,6 @@ namespace RatingWeb.Models
         [DisplayName("Product Name")]
         public string Name { get; set; }
 
-        [Required]
-        [DisplayName("Product Image URL")]
-        public string ImageUrl { get; set; }
 
         [Required]
         [DisplayName("Product Category")]
@@ -27,9 +24,11 @@ namespace RatingWeb.Models
 
         [Required]
         [Range(1, 1000, ErrorMessage = "Price must be between 1 and 1000")]
-        public decimal Price { get; set; }
+        public double Price { get; set; }
 
         [Range(1, 5, ErrorMessage = "Product Rating must be between 1 and 5")]
         public int Rating { get; set; }
+
+       
     }
 }

@@ -14,40 +14,74 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Category>().HasData(
-            new Category { Id = 1, Name = "Action", DisplayOrder = 1 },
-            new Category { Id = 2, Name = "SciFi", DisplayOrder = 2 },
-            new Category { Id = 3, Name = "History", DisplayOrder = 3 }
+            new Category { Id = 1, Name = "Music" },
+            new Category { Id = 2, Name = "SciFi"},
+            new Category { Id = 3, Name = "Era" },
+            new Category { Id = 4, Name = "Action" },
+            new Category { Id = 5, Name = "Modern" },
+            new Category { Id = 6, Name = "Digital" },
+            new Category { Id = 7, Name = "Cartoon" },
+            new Category { Id = 8, Name = "CdS" },
+            new Category { Id = 9, Name = "Anime" }
         );
 
         modelBuilder.Entity<Product>().HasData(
-            new Product
-            {
-                Id = 1,
-                Name = "NFT1",
-                Price = 100,
-                Rating = 1,
-                CategoryId = 1,
-                ImageUrl = "" 
-            },
-            new Product
-            {
-                Id = 2,
-                Name = "NFT2",
-                Price = 3000,
-                Rating = 4,
-                CategoryId = 2,
-                ImageUrl = "" 
-            },
-            new Product
-            {
-                Id = 3,
-                Name = "NFT3",
-                Price = 890,
-                Rating = 5,
-                CategoryId = 3,
-                ImageUrl = "" 
-            }
-        );
+                new Product
+                {
+                    Id = 1,
+                    Name = "NFT1",
+                    Price = 100,
+                    Rating = 1,
+                    CategoryId = 1,
+                   
+                },
+                new Product
+                {
+                    Id = 2,
+                    Name = "NFT2",
+                    Price = 3000,
+                    Rating = 4,
+                    CategoryId = 2,
+                    
+                },
+                new Product
+                {
+                    Id = 3,
+                    Name = "NFT3",
+                    Price = 890,
+                    Rating = 5,
+                    CategoryId = 3,
+                   
+                },
+                new Product
+                {
+                    Id = 4,
+                    Name = "NFT4",
+                    Price = 100,
+                    Rating = 5,
+                    CategoryId = 5,
+
+                },
+                new Product
+                {
+                    Id = 5,
+                    Name = "NFT5",
+                    Price = 3000,
+                    Rating = 4,
+                    CategoryId = 6,
+
+                },
+                new Product
+                {
+                    Id = 6,
+                    Name = "NFT6",
+                    Price = 890,
+                    Rating = 5,
+                    CategoryId = 8,
+
+                }
+            );
+
 
         modelBuilder.Entity<Rating>().HasData(
             new Rating
@@ -66,8 +100,27 @@ public class ApplicationDbContext : DbContext
             {
                 Id = 3,
                 ProductId = 3,
+                Stars = 3
+            },
+            new Rating
+            {
+                Id = 4,
+                ProductId = 4,
+                Stars = 3
+            },
+            new Rating
+            {
+                Id = 5,
+                ProductId = 5,
+                Stars = 5
+            },
+            new Rating
+            {
+                Id = 6,
+                ProductId = 6,
                 Stars = 4
             }
         );
+
     }
 }

@@ -1,39 +1,39 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
 using RatingWeb.Models;
 using RatingWeb.Repository.IRepository;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RatingWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class CategoryController : Controller
     {
-        private readonly IUnitOfWork _unitOfwork;
+        private readonly IUnitOfWork _unitOfWork;
+
         public CategoryController(IUnitOfWork unitOfWork)
         {
-            _unitOfwork =unitOfWork;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            List<Category> objCategoryList = _unitOfwork.Category.GetAll().ToList();
+            List<Category> objCategoryList = _unitOfWork.Category.GetAll().ToList();
             return View(objCategoryList);
         }
+
         public IActionResult Create()
         {
             return View();
         }
+
         [HttpPost]
         public IActionResult Create(Category obj)
         {
-            if (obj.Name == obj.DisplayOrder.ToString())
-            {
-                ModelState.AddModelError("name", "The DisplayOrder cannot exactly match the Name.");
-            }
             if (ModelState.IsValid)
             {
-                _unitOfwork.Category.Add(obj);
-                _unitOfwork.Category.Save();
+                _unitOfWork.Category.Add(obj);
+                _unitOfWork.Category.Save();
                 return RedirectToAction("Index");
             }
             return View();
@@ -45,27 +45,28 @@ namespace RatingWeb.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            Category? categoryFromDb = _unitOfwork.Category.Get(u => u.Id == id);
-            //Category? categoryFromDb1 = _db.Categories.FirstOrDefault(u=>u.Id==id);
-            //Category? categoryFromDb2 = _db.Categories.Where(u=>u.Id==id).FirstOrDefault();3
+
+            Category categoryFromDb = _unitOfWork.Category.Get(u => u.Id == id);
+
             if (categoryFromDb == null)
             {
                 return NotFound();
             }
+
             return View(categoryFromDb);
         }
+
         [HttpPost]
         public IActionResult Edit(Category obj)
         {
             if (ModelState.IsValid)
             {
-                _unitOfwork.Category.Update(obj);
-                _unitOfwork.Save();
+                _unitOfWork.Category.Update(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Category updated successfully";
                 return RedirectToAction("Index");
             }
             return View();
-
         }
 
         public IActionResult Delete(int? id)
@@ -74,28 +75,31 @@ namespace RatingWeb.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            Category? categoryFromDb = _unitOfwork.Category.Get(u => u.Id == id);
+
+            Category categoryFromDb = _unitOfWork.Category.Get(u => u.Id == id);
 
             if (categoryFromDb == null)
             {
                 return NotFound();
             }
+
             return View(categoryFromDb);
         }
+
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
-            Category? obj = _unitOfwork.Category.Get(u => u.Id == id);
+            Category obj = _unitOfWork.Category.Get(u => u.Id == id);
+
             if (obj == null)
             {
                 return NotFound();
             }
-            _unitOfwork.Category.Remove(obj);
-            _unitOfwork.Save();
+
+            _unitOfWork.Category.Remove(obj);
+            _unitOfWork.Save();
             TempData["success"] = "Category deleted successfully";
             return RedirectToAction("Index");
         }
-
-
     }
 }

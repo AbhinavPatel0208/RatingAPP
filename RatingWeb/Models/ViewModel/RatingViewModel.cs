@@ -1,4 +1,4 @@
-﻿namespace RatingWeb.Models
+﻿namespace RatingWeb.Models.ViewModel
 {
     public class RatingViewModel
     {

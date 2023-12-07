@@ -9,5 +9,6 @@ namespace RatingWeb.Models.ViewModels
         public IEnumerable<Product> Products { get; set; }
         public int? CategoryId { get; set; }
         public string SortOrder { get; set; }
+
     }
 }

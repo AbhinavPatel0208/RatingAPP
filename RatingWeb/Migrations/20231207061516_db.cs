@@ -7,7 +7,7 @@
 namespace RatingWeb.Migrations
 {
     /// <inheritdoc />
-    public partial class DB : Migration
+    public partial class db : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,8 +18,7 @@ namespace RatingWeb.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    DisplayOrder = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -33,9 +32,8 @@ namespace RatingWeb.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -71,22 +69,31 @@ namespace RatingWeb.Migrations
 
             migrationBuilder.InsertData(
                 table: "Categories",
-                columns: new[] { "Id", "DisplayOrder", "Name" },
+                columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { 1, 1, "Action" },
-                    { 2, 2, "SciFi" },
-                    { 3, 3, "History" }
+                    { 1, "Music" },
+                    { 2, "SciFi" },
+                    { 3, "Era" },
+                    { 4, "Action" },
+                    { 5, "Modern" },
+                    { 6, "Digital" },
+                    { 7, "Cartoon" },
+                    { 8, "CdS" },
+                    { 9, "Anime" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "CategoryId", "ImageUrl", "Name", "Price", "Rating" },
+                columns: new[] { "Id", "CategoryId", "Name", "Price", "Rating" },
                 values: new object[,]
                 {
-                    { 1, 1, "", "NFT1", 100m, 1 },
-                    { 2, 2, "", "NFT2", 3000m, 4 },
-                    { 3, 3, "", "NFT3", 890m, 5 }
+                    { 1, 1, "NFT1", 100.0, 1 },
+                    { 2, 2, "NFT2", 3000.0, 4 },
+                    { 3, 3, "NFT3", 890.0, 5 },
+                    { 4, 5, "NFT4", 100.0, 5 },
+                    { 5, 6, "NFT5", 3000.0, 4 },
+                    { 6, 8, "NFT6", 890.0, 5 }
                 });
 
             migrationBuilder.InsertData(
@@ -96,7 +103,10 @@ namespace RatingWeb.Migrations
                 {
                     { 1, 1, 3 },
                     { 2, 2, 5 },
-                    { 3, 3, 4 }
+                    { 3, 3, 3 },
+                    { 4, 4, 3 },
+                    { 5, 5, 5 },
+                    { 6, 6, 4 }
                 });
 
             migrationBuilder.CreateIndex(

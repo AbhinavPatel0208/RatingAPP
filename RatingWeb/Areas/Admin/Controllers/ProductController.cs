@@ -1,6 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿// ProductController.cs
+
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using RatingWeb.Models;
+using RatingWeb.Models.ViewModel;
 using RatingWeb.Repository.IRepository;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RatingWeb.Areas.Admin.Controllers
 {
@@ -8,34 +15,50 @@ namespace RatingWeb.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductController(IUnitOfWork unitOfWork)
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
         {
-            List<Product> objProductList = _unitOfWork.Product.GetAll().ToList();
-            return View(objProductList);
+            List<Product> products = _unitOfWork.Product.GetAll().ToList();
+            return View(products);
         }
 
         public IActionResult Create()
         {
+            // Populate ViewBag.Categories for the dropdown
+            ViewBag.Categories = _unitOfWork.Category.GetAll();
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(Product obj)
+        public IActionResult Create(Product product)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Add(obj);
+                Category selectedCategory = _unitOfWork.Category.Get(c => c.Id == product.CategoryId);
+
+                if (selectedCategory == null)
+                {
+                    TempData["error"] = "Invalid category selected.";
+                    return RedirectToAction("Create");
+                }
+
+                product.Category = selectedCategory;
+                _unitOfWork.Product.Add(product);
                 _unitOfWork.Save();
+
                 TempData["success"] = "Product created successfully";
                 return RedirectToAction("Index");
             }
-            return View();
+
+            ViewBag.Categories = _unitOfWork.Category.GetAll();
+            return View(product);
         }
 
         public IActionResult Edit(int? id)
@@ -45,27 +68,30 @@ namespace RatingWeb.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            Product productFromDb = _unitOfWork.Product.Get(u => u.Id == id);
+            Product product = _unitOfWork.Product.Get(u => u.Id == id);
 
-            if (productFromDb == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return View(productFromDb);
+            ViewBag.Categories = _unitOfWork.Category.GetAll();
+            return View(product);
         }
 
         [HttpPost]
-        public IActionResult Edit(Product obj)
+        public IActionResult Edit(Product product)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Update(obj);
+                _unitOfWork.Product.Update(product);
                 _unitOfWork.Save();
                 TempData["success"] = "Product updated successfully";
                 return RedirectToAction("Index");
             }
-            return View();
+
+            ViewBag.Categories = _unitOfWork.Category.GetAll();
+            return View(product);
         }
 
         public IActionResult Delete(int? id)
@@ -75,29 +101,37 @@ namespace RatingWeb.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            Product productFromDb = _unitOfWork.Product.Get(u => u.Id == id);
+            Product product = _unitOfWork.Product.Get(u => u.Id == id);
 
-            if (productFromDb == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return View(productFromDb);
+            return View(product);
         }
 
         [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePOST(int? id)
+        public IActionResult DeleteConfirmed(int? id)
         {
-            Product obj = _unitOfWork.Product.Get(u => u.Id == id);
-            if (obj == null)
+            try
             {
-                return NotFound();
-            }
+                Product product = _unitOfWork.Product.Get(u => u.Id == id);
+                if (product == null)
+                {
+                    return NotFound();
+                }
 
-            _unitOfWork.Product.Remove(obj);
-            _unitOfWork.Save();
-            TempData["success"] = "Product deleted successfully";
-            return RedirectToAction("Index");
+                _unitOfWork.Product.Remove(product);
+                _unitOfWork.Save();
+                TempData["success"] = "Product deleted successfully";
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = $"An error occurred: {ex.Message}";
+                return RedirectToAction("Index");
+            }
         }
 
         public IActionResult Rate(int? id)
@@ -141,6 +175,5 @@ namespace RatingWeb.Areas.Admin.Controllers
 
             return View(ratingViewModel);
         }
-
     }
 }

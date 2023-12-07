@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RatingWeb.Models
 {
@@ -16,6 +17,7 @@ namespace RatingWeb.Models
         // You can add additional properties like UserId if you want to track who gave the rating
 
         // Navigation property for the related product
+        [ForeignKey("ProductId")]
         public Product Product { get; set; }
     }
 }

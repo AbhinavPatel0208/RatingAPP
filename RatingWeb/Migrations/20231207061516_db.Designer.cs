@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace RatingWeb.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231205151950_DB")]
-    partial class DB
+    [Migration("20231207061516_db")]
+    partial class db
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,9 +31,6 @@ namespace RatingWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("DisplayOrder")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -47,20 +44,47 @@ namespace RatingWeb.Migrations
                         new
                         {
                             Id = 1,
-                            DisplayOrder = 1,
-                            Name = "Action"
+                            Name = "Music"
                         },
                         new
                         {
                             Id = 2,
-                            DisplayOrder = 2,
                             Name = "SciFi"
                         },
                         new
                         {
                             Id = 3,
-                            DisplayOrder = 3,
-                            Name = "History"
+                            Name = "Era"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Action"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Modern"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Digital"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Cartoon"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "CdS"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Anime"
                         });
                 });
 
@@ -75,17 +99,13 @@ namespace RatingWeb.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
@@ -101,27 +121,48 @@ namespace RatingWeb.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-                            ImageUrl = "",
                             Name = "NFT1",
-                            Price = 100m,
+                            Price = 100.0,
                             Rating = 1
                         },
                         new
                         {
                             Id = 2,
                             CategoryId = 2,
-                            ImageUrl = "",
                             Name = "NFT2",
-                            Price = 3000m,
+                            Price = 3000.0,
                             Rating = 4
                         },
                         new
                         {
                             Id = 3,
                             CategoryId = 3,
-                            ImageUrl = "",
                             Name = "NFT3",
-                            Price = 890m,
+                            Price = 890.0,
+                            Rating = 5
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryId = 5,
+                            Name = "NFT4",
+                            Price = 100.0,
+                            Rating = 5
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoryId = 6,
+                            Name = "NFT5",
+                            Price = 3000.0,
+                            Rating = 4
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CategoryId = 8,
+                            Name = "NFT6",
+                            Price = 890.0,
                             Rating = 5
                         });
                 });
@@ -163,6 +204,24 @@ namespace RatingWeb.Migrations
                         {
                             Id = 3,
                             ProductId = 3,
+                            Stars = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ProductId = 4,
+                            Stars = 3
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ProductId = 5,
+                            Stars = 5
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ProductId = 6,
                             Stars = 4
                         });
                 });
