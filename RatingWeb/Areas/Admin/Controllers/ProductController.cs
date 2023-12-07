@@ -1,7 +1,9 @@
 ﻿// ProductController.cs
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using RatingWeb.Constants;
 using RatingWeb.Models;
 using RatingWeb.Models.ViewModel;
 using RatingWeb.Repository.IRepository;
@@ -12,6 +14,7 @@ using System.Linq;
 namespace RatingWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

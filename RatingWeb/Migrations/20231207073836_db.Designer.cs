@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace RatingWeb.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231207061516_db")]
+    [Migration("20231207073836_db")]
     partial class db
     {
         /// <inheritdoc />

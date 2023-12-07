@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using RatingWeb.Models;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext : IdentityDbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
@@ -10,9 +11,13 @@ public class ApplicationDbContext : DbContext
     public DbSet<Category> Categories { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Rating> Ratings { get; set; }
+    public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
+
         modelBuilder.Entity<Category>().HasData(
             new Category { Id = 1, Name = "Music" },
             new Category { Id = 2, Name = "SciFi"},
